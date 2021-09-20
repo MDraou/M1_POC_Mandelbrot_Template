@@ -87,12 +87,6 @@ public class ComplexTest {
     }
 
     @Test
-    void testSubtract(){
-        assertThat(zero.subtract(one), is(equalTo(minusOne)));
-        assertThat(one.subtract(i), is(equalTo(oneMinusI)));
-    }
-
-    @Test
     void testDivide(){
         assertThat(onePlusI.divide(Complex.ONE), equalTo(onePlusI));
         assertThat(Complex.ONE.divide(two), equalTo(new Complex(0.5, 0)));
@@ -133,4 +127,5 @@ public class ComplexTest {
         assertThat(twoI.toString(), is(equalTo("2.0i")));
         assertThat(two.toString(), is(equalTo("2.0")));
     }
+
 }
