@@ -1,11 +1,8 @@
 package mandelbrot;
-import static net.obvj.junit.utils.matchers.AdvancedMatchers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class ComplexTest {
     private Complex onePlusI;
@@ -33,99 +30,103 @@ public class ComplexTest {
 
     @Test
     void testEquals(){
-        assertThat(onePlusI, is(equalTo(onePlusI)));
-        assertThat(onePlusI, is(equalTo(new Complex(1, 1))));
-        assertThat(two, is(not(equalTo(twoI))));
+        assertThat(onePlusI).isEqualTo(onePlusI);
+        assertThat(onePlusI).isEqualTo(new Complex(1, 1));
+        assertThat(two).isNotEqualTo(twoI);
     }
 
     @Test
     void testGetReal(){
-        assertThat(two.getReal(), is(closeTo(2., Helpers.EPSILON)));
-        assertThat(onePlusI.getReal(), is(closeTo(1., Helpers.EPSILON)));
-        assertThat(oneMinusI.getReal(), is(closeTo(1., Helpers.EPSILON)));
+        assertThat(two.getReal()).isCloseTo(2., within(Helpers.EPSILON));
+        assertThat(onePlusI.getReal()).isCloseTo(1., within(Helpers.EPSILON));
+        assertThat(oneMinusI.getReal()).isCloseTo(1., within(Helpers.EPSILON));
+        assertThat(twoI.getReal()).isCloseTo(0.,within(Helpers.EPSILON));
     }
 
     @Test
     void testGetImaginary(){
-        assertThat(two.getImaginary(), is(closeTo(0., Helpers.EPSILON)));
-        assertThat(onePlusI.getImaginary(), is(closeTo(1., Helpers.EPSILON)));
-        assertThat(oneMinusI.getImaginary(), is(closeTo(-1., Helpers.EPSILON)));
+        assertThat(two.getImaginary()).isCloseTo(0., within(Helpers.EPSILON));
+        assertThat(onePlusI.getImaginary()).isCloseTo(1., within(Helpers.EPSILON));
+        assertThat(oneMinusI.getImaginary()).isCloseTo(-1., within(Helpers.EPSILON));
     }
+
     @Test
     void testOne(){
-        assertThat(Complex.ONE.getReal(), is(closeTo(1., Helpers.EPSILON)));
-        assertThat(Complex.ONE.getImaginary(), is(closeTo(0., Helpers.EPSILON)));
+        assertThat(Complex.ONE.getReal()).isCloseTo(1., within(Helpers.EPSILON));
+        assertThat(Complex.ONE.getImaginary()).isCloseTo(0., within(Helpers.EPSILON));
     }
+
     @Test
     void testI(){
-        assertThat(Complex.I.getReal(), is(closeTo(0., Helpers.EPSILON)));
-        assertThat(Complex.I.getImaginary(), is(closeTo(1., Helpers.EPSILON)));
+        assertThat(Complex.I.getReal()).isCloseTo(0., within(Helpers.EPSILON));
+        assertThat(Complex.I.getImaginary()).isCloseTo(1., within(Helpers.EPSILON));
     }
     @Test
     void testZero(){
-        assertThat(Complex.ZERO.getReal(), is(closeTo(0., Helpers.EPSILON)));
-        assertThat(Complex.ZERO.getImaginary(), is(closeTo(0., Helpers.EPSILON)));
+        assertThat(Complex.ZERO.getReal()).isCloseTo(0., within(Helpers.EPSILON));
+        assertThat(Complex.ZERO.getImaginary()).isCloseTo(0., within(Helpers.EPSILON));
     }
     @Test
     void testNegate(){
-        assertThat(two.negate(), is(equalTo(new Complex(-2,0))));
-        assertThat(minusI.negate(), is(equalTo(i)));
-        assertThat(oneMinusI.negate(), is(equalTo(new Complex(-1, 1))));
+        assertThat(two.negate()).isEqualTo(new Complex(-2,0));
+        assertThat(minusI.negate()).isEqualTo(i);
+        assertThat(oneMinusI.negate()).isEqualTo(new Complex(-1, 1));
     }
 
     @Test
     void testReciprocal(){
-        assertThat(one.reciprocal(), is(equalTo(one)));
-        assertThat(minusI.reciprocal(), is(equalTo(i)));
-        assertThat(two.reciprocal(), is(equalTo(new Complex(0.5,0))));
-        assertThat(oneMinusI.reciprocal(), is(equalTo(new Complex(0.5,0.5))));
+        assertThat(one.reciprocal()).isEqualTo(one);
+        assertThat(minusI.reciprocal()).isEqualTo(i);
+        assertThat(two.reciprocal()).isEqualTo(new Complex(0.5,0));
+        assertThat(oneMinusI.reciprocal()).isEqualTo(new Complex(0.5,0.5));
     }
 
     @Test
     void testReciprocalOfZero(){
-        assertThat(()->zero.reciprocal(), throwsException(ArithmeticException.class));
+        assertThatExceptionOfType(ArithmeticException.class)
+                .isThrownBy(()->zero.reciprocal());
     }
 
     @Test
     void testDivide(){
-        assertThat(onePlusI.divide(Complex.ONE), equalTo(onePlusI));
-        assertThat(Complex.ONE.divide(two), equalTo(new Complex(0.5, 0)));
-        assertThat(oneMinusI.divide(onePlusI), equalTo(minusI));
+        assertThat(onePlusI.divide(Complex.ONE)).isEqualTo(onePlusI);
+        assertThat(Complex.ONE.divide(two)).isEqualTo(new Complex(0.5, 0));
+        assertThat(oneMinusI.divide(onePlusI)).isEqualTo(minusI);
     }
 
     @Test
     void testDivideByZero(){
-        assertThat(()->one.divide(zero), throwsException(ArithmeticException.class));
+        assertThatExceptionOfType(ArithmeticException.class)
+                .isThrownBy(()->one.divide(zero));
     }
 
     @Test
     void testConjugate(){
-        assertThat(two.conjugate(), equalTo(two));
-        assertThat(oneMinusI.conjugate(), equalTo(onePlusI));
+        assertThat(two.conjugate()).isEqualTo(two);
+        assertThat(oneMinusI.conjugate()).isEqualTo(onePlusI);
     }
 
     @Test
     void testRotation(){
-        assertThat(Complex.rotation(Math.PI/2), equalTo(i));
-        assertThat(Complex.rotation(-Math.PI/2), equalTo(minusI));
-        assertThat(Complex.rotation(0), equalTo(one));
-        assertThat(Complex.rotation(Math.PI/4), equalTo(new Complex(Math.sqrt(2)/2., Math.sqrt(2)/2.)));
-        assertThat(Complex.rotation(Math.PI/3), equalTo(new Complex(1./2., Math.sqrt(3)/2.)));
+        assertThat(Complex.rotation(Math.PI/2)).isEqualTo(i);
+        assertThat(Complex.rotation(-Math.PI/2)).isEqualTo(minusI);
+        assertThat(Complex.rotation(0)).isEqualTo(one);
+        assertThat(Complex.rotation(Math.PI/4)).isEqualTo(new Complex(Math.sqrt(2)/2., Math.sqrt(2)/2.));
+        assertThat(Complex.rotation(Math.PI/3)).isEqualTo(new Complex(1./2., Math.sqrt(3)/2.));
     }
 
     @Test
     void testBasicToString(){
-        assertThat(two.toString(), containsString("2.0"));
-        assertThat(i.toString(), containsString("i"));
+        assertThat(two.toString()).contains("2.0");
+        assertThat(i.toString()).contains("i");
     }
 
     @Test
     void testToStringFormat(){
-        assertThat(oneMinusI.toString(), is(equalTo("1.0 - 1.0i")));
-        assertThat(onePlusI.toString(), is(equalTo("1.0 + 1.0i")));
-        assertThat(minusI.toString(), is(equalTo("-1.0i")));
-        assertThat(twoI.toString(), is(equalTo("2.0i")));
-        assertThat(two.toString(), is(equalTo("2.0")));
+        assertThat(oneMinusI.toString()).isEqualTo("1.0 - 1.0i");
+        assertThat(onePlusI.toString()).isEqualTo("1.0 + 1.0i");
+        assertThat(minusI.toString()).isEqualTo("-1.0i");
+        assertThat(twoI.toString()).isEqualTo("2.0i");
+        assertThat(two.toString()).isEqualTo("2.0");
     }
-
 }
