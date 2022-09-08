@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.*;
 public class ComplexTest {
     private Complex onePlusI;
     private Complex minusI;
-    private Complex minusOne;
     private Complex oneMinusI;
     private Complex twoI;
     private Complex two;
@@ -19,7 +18,6 @@ public class ComplexTest {
     void initializeTestValues(){
         onePlusI = new Complex(1,1);
         minusI = new Complex(0,-1);
-        minusOne = new Complex(-1,0);
         oneMinusI = new Complex(1, -1);
         twoI = new Complex(0,2);
         two = new Complex(2,0);
@@ -32,6 +30,7 @@ public class ComplexTest {
     void testEquals(){
         assertThat(onePlusI).isEqualTo(onePlusI);
         assertThat(onePlusI).isEqualTo(new Complex(1, 1));
+        assertThat(onePlusI).isNotEqualTo(oneMinusI);
         assertThat(two).isNotEqualTo(twoI);
     }
 
@@ -129,4 +128,14 @@ public class ComplexTest {
         assertThat(twoI.toString()).isEqualTo("2.0i");
         assertThat(two.toString()).isEqualTo("2.0");
     }
+
+    @Test
+    void testAdd(){
+        assertThat(i.add(i)).isEqualTo(twoI);
+        assertThat(one.add(i)).isEqualTo(onePlusI);
+        assertThat(one.add(minusI)).isEqualTo(oneMinusI);
+        assertThat(i.add(minusI)).isEqualTo(zero);
+        assertThat(onePlusI.add(oneMinusI)).isEqualTo(two);
+    }
+
 }
