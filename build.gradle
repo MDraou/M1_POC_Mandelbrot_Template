@@ -3,6 +3,9 @@ plugins {
     id "org.openjfx.javafxplugin" version "0.0.13"
 }
 
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
 group 'M1_info_amu'
 version '0.1-SNAPSHOT'
 
