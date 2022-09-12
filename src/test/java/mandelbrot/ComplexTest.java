@@ -2,6 +2,8 @@ package mandelbrot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CompletableFuture;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class ComplexTest {
@@ -13,6 +15,7 @@ public class ComplexTest {
     private Complex one;
     private Complex i;
     private Complex zero;
+    private Complex twotwo;
 
     @BeforeEach
     void initializeTestValues(){
@@ -24,6 +27,7 @@ public class ComplexTest {
         one = new Complex(1,0);
         i = new Complex(0,1);
         zero = new Complex(0,0);
+        twotwo = new Complex(2, 2);
     }
 
     @Test
@@ -138,4 +142,46 @@ public class ComplexTest {
         assertThat(onePlusI.add(oneMinusI)).isEqualTo(two);
     }
 
+    @Test
+    void testReal(){
+        assertThat(Complex.real(0)).isEqualTo(zero);
+        assertThat(Complex.real(1)).isEqualTo(one);
+        assertThat(Complex.real(2)).isEqualTo(two);
+    }
+
+    @Test
+    void testSubtract(){
+        assertThat(two.subtract(one)).isEqualTo(one);
+        assertThat(zero.subtract(i)).isEqualTo(minusI);
+    }
+
+    @Test
+    void testMultiply(){
+        assertThat(one.multiply(oneMinusI)).isEqualTo(oneMinusI);
+        assertThat(twotwo.multiply(twotwo)).isEqualTo(new Complex(0, 8));
+    }
+
+    @Test
+    void testSquaredModulus(){
+        assertThat(onePlusI.squaredModulus()).isEqualTo(2);
+        assertThat(two.squaredModulus()).isEqualTo(4);
+    }
+
+    @Test
+    void testModulus(){
+        assertThat(zero.modulus()).isEqualTo(0);
+        assertThat(one.modulus()).isEqualTo(1);
+        assertThat(two.modulus()).isEqualTo(2);
+    }
+
+    @Test
+    void testPow(){
+        assertThat(twotwo.pow(4)).isEqualTo(new Complex(-64, 0));
+    }
+
+    @Test
+    void testScale() {
+        assertThat(onePlusI.scale(2)).isEqualTo(twotwo);
+        assertThat(oneMinusI.scale(2)).isEqualTo(new Complex(2, -2));
+    }
 }
